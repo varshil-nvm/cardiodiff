@@ -119,11 +119,11 @@ def main():
         print("========================================================")
         print("  FULL TRAINING MODE ACTIVATED                          ")
         print("========================================================")
-        epochs_cls = args.epochs_cls or 10
-        epochs_diff = args.epochs_diff or 12
-        batch_size = args.batch_size or 64
-        diff_timesteps = 100
-        samples_per_minority = 150
+        epochs_cls = args.epochs_cls or 4
+        epochs_diff = args.epochs_diff or 5
+        batch_size = args.batch_size or 128
+        diff_timesteps = 40
+        samples_per_minority = 100
 
     # Device selection
     if args.device:
@@ -149,9 +149,25 @@ def main():
     print(f"[Checkpoint] Saved Baseline Classifier to {baseline_path}")
     
     # 3. Train Conditional 1D DDPM
+    # For large imbalanced datasets (e.g. real MIT-BIH with 87k beats), train DDPM on a class-balanced subset
+    # so the generative model learns rich representations for rare arrhythmias rather than being swamped by normal beats.
+    if len(train_dataset) > 10000:
+        print("[Diffusion] Subsampling balanced distribution across all 5 classes for DDPM training...")
+        balanced_indices = []
+        labels_arr = train_dataset.y.numpy()
+        for c in range(5):
+            c_indices = np.where(labels_arr == c)[0]
+            sampled_c = np.random.choice(c_indices, size=min(len(c_indices), 1200), replace=False)
+            balanced_indices.extend(sampled_c)
+        balanced_sub_dataset = torch.utils.data.Subset(train_dataset, balanced_indices)
+        diff_train_loader = DataLoader(balanced_sub_dataset, batch_size=batch_size, shuffle=True)
+        print(f"[Diffusion] DDPM training set balanced to {len(balanced_sub_dataset)} heartbeats across 5 classes.")
+    else:
+        diff_train_loader = train_loader
+
     diffusion_model = ECG1DDiffusion(timesteps=diff_timesteps, num_classes=5)
     diffusion_model = train_diffusion_model(
-        diffusion_model, train_loader, epochs=epochs_diff, lr=1e-3, device=device
+        diffusion_model, diff_train_loader, epochs=epochs_diff, lr=1e-3, device=device
     )
     diff_path = os.path.join(args.weights_dir, "diffusion_ecg.pt")
     torch.save(diffusion_model.state_dict(), diff_path)

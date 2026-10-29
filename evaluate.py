@@ -163,9 +163,10 @@ def main():
     augmented_cls.eval()
     
     # Diffusion Model
-    diff_steps = 30 if args.fast else 100
+    diff_ckpt = torch.load(diff_path, map_location=device)
+    diff_steps = len(diff_ckpt.get('betas', torch.zeros(50)))
     diffusion_model = ECG1DDiffusion(timesteps=diff_steps, num_classes=5)
-    diffusion_model.load_state_dict(torch.load(diff_path, map_location=device))
+    diffusion_model.load_state_dict(diff_ckpt)
     diffusion_model.to(device)
     diffusion_model.eval()
     

@@ -1,4 +1,4 @@
 Model,Accuracy,Macro_F1,Minority_Recall,FID_1D,Diversity_Ratio
-Baseline (Imbalanced),0.9353,0.5544,0.5,,
-Random Oversampling (ROS),0.9212,0.5565,0.5,,
-DDPM Augmented (Ours),0.9353,0.559,0.5,167.501,1.785
+Baseline (Imbalanced),0.9446,0.6554,0.4898,,
+Random Oversampling (ROS),0.9304,0.73,0.6387,,
+DDPM Augmented (Ours),0.969,0.821,0.7876,40.0401,1.0253
