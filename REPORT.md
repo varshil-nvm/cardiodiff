@@ -2,7 +2,7 @@
 
 **Author / Team:** CardioDiff Research  
 **Repository:** [https://github.com/varshil-nvm/cardiodiff](https://github.com/varshil-nvm/cardiodiff)  
-**Live Application:** [Streamlit Cloud Dashboard](https://share.streamlit.io/)  
+**Live Application:** [https://cardiodiff.streamlit.app/](https://cardiodiff.streamlit.app/)  
 **Dataset:** PhysioNet / Kaggle MIT-BIH Arrhythmia Database (87,554 train, 21,892 test)  
 
 ---
