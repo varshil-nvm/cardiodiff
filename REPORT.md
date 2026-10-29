@@ -1,8 +1,8 @@
 # Technical Report: CardioDiff — 1D Diffusion for ECG Signal Synthesis & Imbalanced Arrhythmia Classification
 
 **Author / Team:** CardioDiff Research  
-**Repository:** [GitHub Repository](#)  
-**Live Application:** [Streamlit Cloud Dashboard](#)  
+**Repository:** [https://github.com/varshil-nvm/cardiodiff](https://github.com/varshil-nvm/cardiodiff)  
+**Live Application:** [Streamlit Cloud Dashboard](https://share.streamlit.io/)  
 **Dataset:** PhysioNet / Kaggle MIT-BIH Arrhythmia Database  
 
 ---
