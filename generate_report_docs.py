@@ -125,7 +125,6 @@ def build_document():
         set_cell_bg(cell, "F7FAFC")
         cell.width = Inches(6.5)
         
-        # Left border only (accent)
         tcPr = cell._tc.get_or_add_tcPr()
         borders = parse_xml(
             f'<w:tcBorders {nsdecls("w")}>'
@@ -162,9 +161,9 @@ def build_document():
                     bold=True, space_after=16, align=WD_ALIGN_PARAGRAPH.CENTER, color=navy)
     p_title.runs[0].font.size = Pt(20)
 
-    p_course = add_p("A Project Report Submitted in Partial Fulfillment of the Requirements for the Course\nSOFT COMPUTING", 
-                     bold=False, italic=True, space_after=32, align=WD_ALIGN_PARAGRAPH.CENTER, color=charcoal)
-    p_course.runs[0].font.size = Pt(12)
+    p_course = add_p("A Project Report Submitted in Partial Fulfillment of the Requirements for the Course\nGENERATIVE ARTIFICIAL INTELLIGENCE", 
+                     bold=True, space_after=32, align=WD_ALIGN_PARAGRAPH.CENTER, color=slate)
+    p_course.runs[0].font.size = Pt(13)
 
     # Team Members Table
     add_p("SUBMITTED BY:", bold=True, space_after=6, align=WD_ALIGN_PARAGRAPH.CENTER, color=slate)
@@ -215,24 +214,24 @@ def build_document():
         ("3. Introduction", "4"),
         ("    3.1 Background of the Problem", "4"),
         ("    3.2 Motivation", "4"),
-        ("    3.3 Relevance in Soft Computing and Biomedical AI", "5"),
+        ("    3.3 Relevance in Generative AI and Biomedical Systems", "5"),
         ("    3.4 Overview of the Proposed Solution", "5"),
         ("4. Problem Statement & Objectives", "6"),
         ("    4.1 Problem Statement", "6"),
         ("    4.2 Specific Objectives", "6"),
         ("5. Literature Review / Existing Work", "7"),
         ("    5.1 Conventional Imbalanced Learning in Arrhythmia", "7"),
-        ("    5.2 Generative Models: GANs vs. VAEs", "7"),
-        ("    5.3 Limitations and Gaps in Existing Approaches", "8"),
+        ("    5.2 Deep Generative Models: GANs, VAEs, and Normalizing Flows", "7"),
+        ("    5.3 Limitations and Gaps in Existing Generative Paradigms", "8"),
         ("    5.4 How CardioDiff Improves Upon Prior Art", "8"),
         ("6. Proposed Methodology", "9"),
         ("    6.1 Overall System Workflow", "9"),
         ("    6.2 1D-CNN Arrhythmia Classifier Architecture", "10"),
-        ("    6.3 Conditional 1D DDPM Architecture", "11"),
-        ("7. Soft Computing Technique: Denoising Diffusion Models", "12"),
-        ("    7.1 Fundamental Concept of Continuous Diffusion", "12"),
-        ("    7.2 Forward (Diffusion) and Reverse (Denoising) Processes", "12"),
-        ("    7.3 Conditioning & Sinusoidal Temporal Embeddings", "13"),
+        ("    6.3 Conditional 1D DDPM Generative Architecture", "11"),
+        ("7. Generative AI Technique: Denoising Diffusion Models (DDPM)", "12"),
+        ("    7.1 Fundamental Concept of Score-Based Diffusion Models", "12"),
+        ("    7.2 Forward Diffusion and Reverse Denoising Markov Chains", "12"),
+        ("    7.3 Class Conditioning & Sinusoidal Temporal Embeddings", "13"),
         ("    7.4 Algorithmic Implementations & Pseudocode", "14"),
         ("8. Dataset & Input Data Preprocessing", "15"),
         ("    8.1 MIT-BIH Database Description", "15"),
@@ -245,7 +244,7 @@ def build_document():
         ("    9.4 Hyperparameters & Training Configurations", "18"),
         ("10. Experimental Setup & Comparative Analysis", "19"),
         ("    10.1 Experimental Scenarios", "19"),
-        ("    10.2 Mathematical Formulations of Evaluation Metrics", "19"),
+        ("    10.2 Mathematical Formulations of Evaluation Metrics (1D-FID, Diversity)", "19"),
         ("11. Results & Discussion", "21"),
         ("    11.1 Primary Benchmark Summary", "21"),
         ("    11.2 Per-Class Recall & Diagnostic Analysis", "22"),
@@ -254,11 +253,11 @@ def build_document():
         ("12. Cloud Deployment & Interactive Dashboard", "26"),
         ("    12.1 Deployment Architecture (Streamlit Cloud)", "26"),
         ("    12.2 Dashboard Feature Walkthrough (4 Tabs)", "26"),
-        ("    12.3 Clinical Impact & Utility", "27"),
+        ("    12.3 Clinical Impact & Data-Centric AI", "27"),
         ("13. Conclusion", "28"),
         ("14. Future Scope", "29"),
         ("15. References", "30"),
-        ("16. Appendix: Core Code Snippets", "31"),
+        ("16. Appendix: Core Code Implementations", "31"),
     ]
     t_toc = doc.add_table(rows=len(toc_items), cols=2)
     t_toc.alignment = WD_TABLE_ALIGNMENT.CENTER
@@ -293,31 +292,32 @@ def build_document():
     add_h1("2. ABSTRACT")
     add_p(
         "Cardiovascular diseases (CVDs) remain the leading cause of global mortality, demanding automated, real-time "
-        "electrocardiogram (ECG) arrhythmia classification for patient monitoring. However, real-world clinical bio-signal "
-        "datasets exhibit severe class imbalance, where normal heartbeats overpower critical, life-threatening arrhythmias "
-        "(such as Premature Ventricular Contractions, Supraventricular Ectopic beats, and Ventricular Fusion beats). "
-        "Machine learning classifiers trained on such unmitigated distributions exhibit drastic bias towards the majority class, "
-        "sacrificing minority diagnostic recall."
+        "electrocardiogram (ECG) arrhythmia classification for patient monitoring. However, clinical bio-signal datasets "
+        "exhibit severe class imbalance, where normal heartbeats overpower critical, life-threatening arrhythmias (such as "
+        "Premature Ventricular Contractions, Supraventricular Ectopic beats, and Ventricular Fusion beats). Supervised deep learning "
+        "models trained on such skewed distributions suffer from severe majority bias, sacrificing diagnostic sensitivity on rare, high-risk conditions."
     )
     add_p(
-        "To overcome this fundamental challenge, this project develops CardioDiff, a soft computing framework combining "
-        "Conditional 1D Denoising Diffusion Probabilistic Models (DDPM) with deep 1D Convolutional Neural Networks (1D-CNN) "
-        "for physiological heartbeat synthesis and augmented classification. CardioDiff models the non-linear, stochastic data "
-        "distribution of 125 Hz ECG waveforms (187 points) across a parameterized Markov chain, learning the underlying manifold "
-        "of underrepresented cardiac conditions."
+        "To overcome this fundamental limitation, this project introduces CardioDiff, a Generative Artificial Intelligence (GenAI) "
+        "framework utilizing Conditional 1D Denoising Diffusion Probabilistic Models (DDPM) coupled with deep 1D Convolutional Neural Networks (1D-CNN) "
+        "for high-fidelity physiological heartbeat synthesis and generative data augmentation. CardioDiff models the continuous, non-linear probability "
+        "density function p(x|y) of 125 Hz ECG waveforms (187 signal points) via a parameterized reverse-time Markov process, accurately learning the "
+        "electrophysiological manifold of underrepresented cardiac conditions without mode collapse."
     )
     add_p(
         "Trained and evaluated on 109,446 real clinical heartbeats from the benchmark PhysioNet / Kaggle MIT-BIH Arrhythmia Database "
         "(87,554 training beats, 21,892 held-out test beats), CardioDiff achieves an overall accuracy of 96.90%, a Macro-F1 score "
         "of 0.8210 (a +16.56% absolute improvement over the baseline 0.6554), and minority diagnostic recall of 0.7876 "
-        "(a +29.78% increase over the baseline 0.4898). The synthesized waveforms attain a 1D Fréchet Inception Distance (1D-FID) "
-        "of 40.0401 and an optimal Diversity Ratio of 1.0253, indicating high morphological fidelity without mode collapse. "
-        "The end-to-end framework is containerized and deployed live on Streamlit Cloud (https://cardiodiff.streamlit.app/)."
+        "(a +29.78% increase over the baseline 0.4898). Crucially, the rarest condition (Class 3: Fusion Beat, <0.8% of data) saw diagnostic "
+        "recall rise from 21.60% to 77.16% (+55.56%). The synthesized waveforms achieve a 1D Fréchet Inception Distance (1D-FID) of 40.0401 "
+        "and an optimal Diversity Ratio of 1.0253, confirming high morphological realism and broad manifold coverage. The framework is deployed "
+        "live as an interactive web platform on Streamlit Cloud (https://cardiodiff.streamlit.app/)."
     )
 
     add_callout(
-        "Keywords: Soft Computing, Denoising Diffusion Probabilistic Models (DDPM), Electrocardiogram (ECG), "
-        "1D-CNN, Class Imbalance, Arrhythmia Classification, MIT-BIH Database, 1D-FID, Streamlit Cloud.",
+        "Keywords: Generative Artificial Intelligence (GenAI), Denoising Diffusion Probabilistic Models (DDPM), "
+        "Electrocardiogram (ECG) Synthesis, 1D-CNN, Class Imbalance, 1D Fréchet Inception Distance (1D-FID), "
+        "Data-Centric AI, Streamlit Cloud.",
         "Index Terms:"
     )
 
@@ -329,54 +329,49 @@ def build_document():
     add_h1("3. INTRODUCTION")
     add_h2("3.1 Background of the Problem")
     add_p(
-        "The electrocardiogram (ECG) represents the non-invasive recording of electrical potentials generated by cardiac muscle "
-        "depolarization and repolarization throughout each cardiac cycle. A normal sinus heartbeat displays characteristic "
-        "physiological deflections: the P wave (atrial depolarization), the QRS complex (ventricular depolarization), and the "
-        "T wave (ventricular repolarization). Variations in the duration, amplitude, or morphological structure of these intervals "
-        "serve as diagnostic indicators of cardiac arrhythmias."
+        "The electrocardiogram (ECG) captures the spatial-temporal propagation of electrical cardiac action potentials through the myocardial conduction system. "
+        "A canonical heartbeat cycle exhibits three fundamental morphological deflections: "
+        "\n• The P wave: Atrial depolarization."
+        "\n• The QRS complex: Rapid ventricular depolarization, reflecting ventricular contraction."
+        "\n• The T wave: Ventricular repolarization."
     )
     add_p(
-        "While automated machine learning algorithms have achieved impressive performance in controlled benchmark settings, "
-        "real-world deployment is severely obstructed by extreme epidemiological class imbalance. Out of routine Holter recordings "
-        "or ambulatory ECG feeds, over 80% to 90% of recorded heartbeats belong to normal rhythm, whereas malignant conditions—such "
-        "as Ventricular Ectopic Beats (PVCs) or Fusion Beats—manifest infrequently."
+        "Deviations in wave morphology, duration, amplitude, or inter-beat intervals indicate underlying electrophysiological abnormalities known as cardiac arrhythmias. "
+        "While deep learning architectures (such as 1D-CNNs and Transformers) achieve strong performance under synthetic or artificially balanced test conditions, "
+        "clinical deployment in ambulatory telemetry and emergency care faces a critical bottleneck: epidemiological class imbalance. In standard clinical datasets, "
+        "normal sinus rhythms constitute over 80% to 90% of recordings, while lethal ventricular and fusion arrhythmias occur rarely."
     )
 
     add_h2("3.2 Motivation")
     add_p(
-        "When standard connectionist models (e.g., deep neural networks) minimize empirical risk over severely skewed training sets, "
-        "the loss gradient is dominated by normal heartbeats. Consequently, the network achieves an artificially high global accuracy "
-        "(>94%) simply by predicting the majority class, while exhibiting disastrous false-negative rates on critical arrhythmias. "
-        "In a medical diagnostic context, missing a malignant ventricular event can lead to undetected ventricular fibrillation and cardiac arrest."
+        "When modern neural classifiers minimize empirical risk on severely skewed training sets, the optimization trajectory is heavily dominated by majority normal heartbeats. "
+        "Consequently, models achieve superficially high accuracy (>94%) by routinely predicting normal rhythm, while completely failing to detect rare, life-threatening arrhythmias. "
+        "In acute clinical scenarios, false negatives on ventricular ectopic contractions or fusion beats can lead to undetected sustained ventricular tachycardia and sudden cardiac death."
     )
     add_p(
-        "Traditional statistical oversampling techniques (such as Random Oversampling) merely duplicate identical signals, leading to "
-        "acute overfitting on specific noise patterns. Classical heuristic interpolation methods (such as SMOTE) create linear blends "
-        "between distinct cardiac beats that violate biophysical laws, yielding non-physiological waveforms with corrupted ST segments "
-        "and distorted QRS peaks. Therefore, there is a compelling need for advanced generative soft computing paradigms that model the "
-        "continuous, high-dimensional probability distribution of biological time-series data."
+        "Traditional mitigation methods fail in medical time series: "
     )
+    add_bullet("Random Oversampling (ROS): ", "Duplicates minority samples verbatim, causing the model to overfit on noise artifacts and patient-specific baseline wander.")
+    add_bullet("SMOTE & Heuristic Interpolation: ", "Linearly blends nearest-neighbor waveforms. Because cardiac waveforms represent non-linear solutions to differential cardiac electrodynamics, linear interpolation generates physically impossible signals with distorted ST segments, blunted QRS peaks, and unnatural repolarization curves.")
 
-    add_h2("3.3 Relevance in Soft Computing and Biomedical AI")
+    add_h2("3.3 Relevance in Generative AI and Biomedical Systems")
     add_p(
-        "Soft computing addresses complex, non-linear, uncertain, and stochastic real-world problems through connectionist architectures, "
-        "probabilistic reasoning, and evolutionary/generative learning. Denoising Diffusion Probabilistic Models (DDPM) represent a premier "
-        "probabilistic soft computing paradigm. Rooted in non-equilibrium thermodynamics and stochastic calculus, diffusion models "
-        "reformulate generative modeling as learning to reverse a gradual physical diffusion process that injects Gaussian uncertainty into signals. "
-        "Coupled with 1D Convolutional Neural Networks, this paradigm captures spatial-temporal bio-signal invariances and generates "
-        "continuous, biologically valid synthetic samples."
+        "Generative Artificial Intelligence (GenAI) has emerged as a transformative frontier in modern machine learning, moving beyond discriminative pattern matching "
+        "to learn the underlying joint distribution p(x, y) of complex multimodal data. While GenAI has seen extraordinary success in 2D computer vision and natural language processing, "
+        "its application to continuous, single-lead 1D biomedical time series presents unique challenges: "
     )
+    add_bullet("Electrophysiological Consistency: ", "Generated heartbeats must adhere to strict temporal sequences (P-QRS-T) without high-frequency phase discontinuities.")
+    add_bullet("Mode Collapse Avoidance: ", "Generative models must capture the diverse intra-class morphological variations of arrhythmias across different patients.")
+    add_bullet("Training Stability: ", "Unlike Generative Adversarial Networks (GANs), which suffer from minimax instability and vanishing gradients, Denoising Diffusion Probabilistic Models (DDPM) leverage score matching and non-equilibrium thermodynamics to provide stable, mode-covering generative modeling.")
 
     add_h2("3.4 Overview of the Proposed Solution")
-    add_p(
-        "CardioDiff provides an end-to-end soft computing architecture addressing this medical AI challenge: "
-    )
-    add_bullet("Data Pipeline: ", "Standardizes 187-point single-lead ECG recordings from the MIT-BIH dataset into normalized amplitudes in [0, 1].")
-    add_bullet("Baseline 1D-CNN: ", "Trained directly on raw imbalanced distributions to benchmark majority bias and establish an empirical baseline.")
-    add_bullet("Conditional 1D DDPM: ", "Employs a specialized 1D U-Net backbone with skip connections, sinusoidal time-step embeddings, and learnable class conditioning vectors to model cardiac waveforms over T=40 diffusion steps.")
-    add_bullet("Targeted Augmentation: ", "Synthesizes high-fidelity minority heartbeats to balance the training distribution.")
-    add_bullet("Augmented 1D-CNN: ", "Trained on the expanded dataset, demonstrating massive recoveries in Macro-F1 and minority recall.")
-    add_bullet("Streamlit Cloud Platform: ", "Deployed live at https://cardiodiff.streamlit.app/ for real-time waveform generation, diffusion inspection, and latent manifold exploration.")
+    add_p("CardioDiff provides an end-to-end Generative AI pipeline addressing this challenge: ")
+    add_bullet("Bio-Signal Preprocessing Pipeline: ", "Standardizes 187-sample ECG heartbeats sampled at 125 Hz from the MIT-BIH dataset into normalized amplitudes in [0, 1].")
+    add_bullet("Baseline Discriminative Model: ", "Trains a 1D-CNN directly on the raw imbalanced dataset to establish an empirical performance benchmark.")
+    add_bullet("Class-Conditioned 1D DDPM Denoiser: ", "Formulates continuous ECG generation via a 1D U-Net backbone with skip connections, sinusoidal temporal embeddings, and class conditioning projections across T=40 diffusion steps.")
+    add_bullet("Physiological Generative Augmentation: ", "Generates novel synthetic heartbeats for minority arrhythmia classes (Supraventricular, Ventricular, Fusion, Paced).")
+    add_bullet("Augmented 1D-CNN Classifier: ", "Retrains the 1D-CNN on the diffusion-augmented dataset, demonstrating dramatic recoveries in minority sensitivity.")
+    add_bullet("Interactive Cloud Deployment: ", "Containerized and deployed live on Streamlit Cloud (https://cardiodiff.streamlit.app/), enabling real-time waveform generation, step-by-step diffusion trajectory inspection, and latent space PCA exploration.")
 
     doc.add_page_break()
 
@@ -388,25 +383,25 @@ def build_document():
     add_p(
         "Given a discrete 1D electrocardiogram signal x in R^187 representing a segmented cardiac cycle sampled at 125 Hz, "
         "and an associated clinical diagnosis y in {0, 1, 2, 3, 4} corresponding to the ANSI/AAMI EC57 standard: "
-        "\n• Class 0: Normal Sinus Rhythm (N)"
-        "\n• Class 1: Supraventricular Ectopic Beat (S)"
-        "\n• Class 2: Premature Ventricular Contraction (V)"
-        "\n• Class 3: Fusion of Ventricular and Normal Beat (F)"
-        "\n• Class 4: Unclassifiable / Paced Beat (Q)"
+        "\n• Class 0: Normal Sinus Rhythm (N) — Majority Class (82.8%)"
+        "\n• Class 1: Supraventricular Ectopic Beat (S) — 2.5%"
+        "\n• Class 2: Premature Ventricular Contraction (V) — 6.6%"
+        "\n• Class 3: Fusion of Ventricular and Normal Beat (F) — 0.7% (Extreme Minority)"
+        "\n• Class 4: Unclassifiable / Paced Beat (Q) — 7.4%"
     )
     add_p(
-        "The dataset exhibits extreme disproportion (|C0| >> |C4| > |C2| >> |C1| >> |C3|), where Fusion beats constitute less than 0.8% of the data. "
-        "The practical problem is: How can a generative soft computing framework learn the true probability distribution p(x|y) of scarce "
-        "cardiac arrhythmias to synthesize realistic, diverse, electrophysiologically sound heartbeats, thereby eliminating classification "
-        "bias and dramatically elevating minority diagnostic recall without degrading overall accuracy?"
+        "The training dataset exhibits an extreme imbalance ratio of 1 : 113.1 between Normal and Fusion beats. "
+        "The Generative AI Problem: How can a conditional deep generative model accurately learn the continuous probability distribution "
+        "p(x|y) of rare cardiac arrhythmias to synthesize physiologically coherent, diverse heartbeats that expand classification decision boundaries "
+        "and eliminate diagnostic bias without degrading specificity?"
     )
 
     add_h2("4.2 Specific Objectives")
-    add_bullet("Objective 1 (Architect 1D DDPM): ", "Design a 1D U-Net denoiser tailored for continuous single-lead time-series signals with temporal sinusoidal encodings and categorical class embedding projections.")
-    add_bullet("Objective 2 (Latent Feature Extractor): ", "Develop a hierarchical 3-block 1D-CNN classifier whose 64-dimensional penultimate bottleneck enables feature extraction, evaluation of 1D Fréchet Inception Distance (1D-FID), and manifold projection.")
+    add_bullet("Objective 1 (Architect Conditional 1D DDPM): ", "Design a specialized 1D U-Net denoiser tailored for continuous single-lead time series with sinusoidal time-step embeddings and learnable class conditioning vectors.")
+    add_bullet("Objective 2 (Latent Feature Extractor): ", "Develop a hierarchical 3-block 1D-CNN classifier whose 64-dimensional penultimate bottleneck enables feature extraction, evaluation of 1D Fréchet Inception Distance (1D-FID), and latent manifold projection.")
     add_bullet("Objective 3 (Eliminate Minority Blindness): ", "Elevate minority diagnostic recall (specifically for S, V, and F arrhythmias) by at least 25% over the unaugmented baseline on the held-out test partition.")
-    add_bullet("Objective 4 (Prevent Mode Collapse): ", "Maintain sample diversity with a Diversity Ratio near 1.0, avoiding the memorization pitfalls of Random Oversampling (ROS).")
-    add_bullet("Objective 5 (Cloud Clinical Deployment): ", "Deploy an interactive web tool with real-time signal synthesis, step-by-step diffusion inspection, metrics analysis, and latent space visualization on Streamlit Cloud.")
+    add_bullet("Objective 4 (Prevent Generative Mode Collapse): ", "Maintain sample diversity with a Diversity Ratio near 1.0, avoiding the memorization pitfalls of Random Oversampling (ROS).")
+    add_bullet("Objective 5 (Deploy Clinical GenAI Platform): ", "Deploy an interactive web tool with real-time signal synthesis, step-by-step diffusion inspection, metrics analysis, and latent space visualization on Streamlit Cloud.")
 
     doc.add_page_break()
 
@@ -422,25 +417,26 @@ def build_document():
     )
     add_bullet("Random Undersampling (RUS): ", "Discards majority class samples, discarding valuable epidemiological variability.")
     add_bullet("Random Oversampling (ROS): ", "Replicates minority samples verbatim, causing decision boundaries to tightly contract around repeated data points and causing severe overfitting.")
-    add_bullet("SMOTE (Synthetic Minority Over-sampling): ", "Interpolates linearly between nearest neighbors. In non-linear physiological time series, linear combinations of out-of-phase ECG beats produce flattened QRS peaks, artificial baseline wander, and non-physiological wave morphology.")
+    add_bullet("SMOTE: ", "Linearly interpolates nearest neighbors, creating non-physiological waveforms with corrupted ST segments and distorted QRS peaks.")
 
-    add_h2("5.2 Generative Models: GANs vs. VAEs")
+    add_h2("5.2 Deep Generative Models: GANs, VAEs, and Normalizing Flows")
     add_p(
-        "With the advent of deep generative models, researchers explored 1D-GANs (e.g., WaveGAN, BiWGAN) and 1D-VAEs for ECG synthesis: "
+        "With the emergence of deep generative modeling, researchers explored several GenAI paradigms for bio-signals: "
     )
-    add_bullet("Variational Autoencoders (VAEs): ", "Optimize an evidence lower bound (ELBO) using an explicit Gaussian prior. While computationally efficient, VAEs suffer from blurriness and over-smoothing in time-series signals due to the injective nature of the reconstruction loss, failing to preserve sharp QRS spikes.")
-    add_bullet("Generative Adversarial Networks (GANs): ", "Employ an adversarial game between a generator and discriminator. While capable of producing sharp waveforms, 1D-GANs suffer from notorious training instability, gradient vanishing, hyperparameter hypersensitivity, and mode collapse (where the generator produces only a single prototypical ventricular beat repeatedly).")
+    add_bullet("Variational Autoencoders (VAEs): ", "Optimize an evidence lower bound (ELBO) using an explicit Gaussian prior. While computationally fast, VAEs suffer from blurriness and over-smoothing in time-series signals due to the injective nature of the reconstruction loss, failing to preserve sharp QRS spikes.")
+    add_bullet("Generative Adversarial Networks (GANs): ", "Employ an adversarial game between a generator and discriminator. While capable of producing sharp waveforms, 1D-GANs suffer from notorious training instability, gradient vanishing, hyperparameter hypersensitivity, and mode collapse.")
+    add_bullet("Normalizing Flows: ", "Require strict architectural invertibility constraints that lead to enormous parameter counts and restrict representational capacity for multi-scale time series.")
 
-    add_h2("5.3 Limitations and Gaps in Existing Approaches")
+    add_h2("5.3 Limitations and Gaps in Existing Generative Paradigms")
     t_lit = doc.add_table(rows=6, cols=5)
     t_lit.alignment = WD_TABLE_ALIGNMENT.CENTER
     lit_data = [
-        ["Methodology", "Morphological Fidelity", "Mode Diversity", "Training Stability", "Biological Realism"],
-        ["ROS", "Identical copies", "Zero new diversity", "High", "N/A (Duplicates)"],
+        ["Generative Methodology", "Morphological Fidelity", "Mode Diversity", "Training Stability", "Electrophysiological Realism"],
+        ["Random Oversampling (ROS)", "Identical copies", "Zero new diversity", "High", "N/A (Duplicate)"],
         ["SMOTE", "Low (Linear artifacts)", "Moderate", "High", "Poor (Non-physiological)"],
         ["1D-VAE", "Moderate (Over-smoothed)", "High", "High", "Moderate (Blunted peaks)"],
         ["1D-GAN", "High", "Low (Mode collapse)", "Poor (Divergence)", "Moderate"],
-        ["CardioDiff (DDPM)", "High (Sharp QRS/T)", "High (Diversity ~1.02)", "Stable (MSE loss)", "High (Physiological)"],
+        ["CardioDiff (1D DDPM)", "High (Sharp QRS/T)", "High (Diversity ~1.02)", "Stable (MSE loss)", "High (Physiologically Sound)"],
     ]
     for r_idx, row in enumerate(lit_data):
         for c_idx, val in enumerate(row):
@@ -491,7 +487,7 @@ def build_document():
         "\n• Classification Output: Linear(64 -> 5) computing cross-entropy logits across N, S, V, F, Q."
     )
 
-    add_h2("6.3 Conditional 1D DDPM Architecture")
+    add_h2("6.3 Conditional 1D DDPM Generative Architecture")
     add_p(
         "The generative core is a 1D U-Net denoiser with residual connections: "
         "\n• Conditioning Vector: 128-dim sinusoidal timestep encoding + 128-dim learnable class embedding, fused via a 2-layer MLP."
@@ -503,17 +499,19 @@ def build_document():
     doc.add_page_break()
 
     # =========================================================================
-    # 7. SOFT COMPUTING TECHNIQUE: DDPM
+    # 7. GENERATIVE AI TECHNIQUE: DDPM
     # =========================================================================
-    add_h1("7. SOFT COMPUTING TECHNIQUE: DENOISING DIFFUSION PROBABILISTIC MODELS (DDPM)")
-    add_h2("7.1 Fundamental Concept of Continuous Diffusion")
+    add_h1("7. GENERATIVE AI TECHNIQUE: DENOISING DIFFUSION PROBABILISTIC MODELS (DDPM)")
+    add_h2("7.1 Fundamental Concept of Score-Based Diffusion Models")
     add_p(
-        "In soft computing, generative modeling can be formulated as learning a vector field that points toward regions of high probability density in a data manifold. "
-        "DDPM constructs a parameterized forward Markov chain that systematically adds Gaussian noise to an ECG signal until it degrades into pure isotropic white noise, "
-        "alongside a reverse parameterized neural network that inverts this destruction step-by-step."
+        "In Generative AI, score-based and diffusion models formulate generation as learning the gradient of the log probability density (the Stein score function): "
+        "\n    s_theta(x) ~= nabla_x log p(x)"
+        "\nInstead of directly generating clean data from a low-dimensional noise vector (as in GANs or VAEs), DDPM constructs a two-stage thermodynamic process: "
+        "\n1. A Forward Diffusion Process that systematically destroys data structure by injecting Gaussian noise."
+        "\n2. A Reverse Denoising Process where a neural network learns the reverse score function to iteratively restore structured signals from pure noise."
     )
 
-    add_h2("7.2 Forward (Diffusion) and Reverse (Denoising) Processes")
+    add_h2("7.2 Forward Diffusion and Reverse Denoising Markov Chains")
     add_p(
         "Forward Process (q): Given a real heartbeat x_0, Gaussian noise is injected over T=40 timesteps governed by variance schedule beta_1 to beta_T: "
         "\n    q(x_t | x_{t-1}) = N(x_t; sqrt(1 - beta_t) * x_{t-1}, beta_t * I)"
@@ -531,7 +529,7 @@ def build_document():
         "\n    L_simple(theta) = E_{t, x_0, y, epsilon} [ || epsilon - epsilon_theta(x_t, t, y) ||^2 ]"
     )
 
-    add_h2("7.3 Conditioning & Sinusoidal Temporal Embeddings")
+    add_h2("7.3 Class Conditioning & Sinusoidal Temporal Embeddings")
     add_p(
         "Timestep t is mapped via continuous sinusoidal positional encodings: "
         "\n    PE(t, 2i) = sin(t / 10000^{2i/d}),    PE(t, 2i+1) = cos(t / 10000^{2i/d})"
@@ -625,7 +623,7 @@ def build_document():
     add_h1("9. IMPLEMENTATION DETAILS")
     add_h2("9.1 Software, Libraries & Environment")
     add_bullet("Language & Runtime: ", "Python 3.14 / Python 3.12 (CPython x64)")
-    add_bullet("Deep Learning: ", "PyTorch 2.15 (1D Convolutions, automatic differentiation, GPU/CPU tensor engines)")
+    add_bullet("Deep Generative Framework: ", "PyTorch 2.15 (1D Convolutions, automatic differentiation, GPU/CPU tensor engines)")
     add_bullet("Scientific & Linear Algebra: ", "NumPy 2.x, SciPy 1.18 (matrix square roots via scipy.linalg.sqrtm)")
     add_bullet("Data & Metrics: ", "Pandas, Scikit-Learn (Macro-F1, Confusion Matrix, PCA decomposition)")
     add_bullet("Web Dashboard: ", "Streamlit 1.66 (multi-tab reactive user interface)")
@@ -676,7 +674,7 @@ def build_document():
     add_bullet("Scenario B (Random Oversampling - ROS): ", "Minority class heartbeats are synthetically duplicated at random until balance is approximated.")
     add_bullet("Scenario C (CardioDiff DDPM - Ours): ", "1D-CNN trained on the original dataset augmented with 100 conditional DDPM-generated heartbeats per minority class (1, 2, 3, 4).")
 
-    add_h2("10.2 Mathematical Formulations of Evaluation Metrics")
+    add_h2("10.2 Mathematical Formulations of Evaluation Metrics (1D-FID, Diversity)")
     add_p("1. Macro-Averaged F1 Score: Unweighted mean of class F1 scores:")
     add_code("Macro-F1 = (1 / C) * sum_{c=0}^{C-1} [ 2 * Precision_c * Recall_c / (Precision_c + Recall_c) ]")
     add_p("2. Minority Diagnostic Recall: Diagnostic sensitivity averaged across rare arrhythmias (S, V, F, Q):")
@@ -720,7 +718,7 @@ def build_document():
     set_table_borders(t_res)
 
     add_callout(
-        "Key Quantitative Milestone: CardioDiff delivers an absolute gain of +16.56% in Macro-F1 (0.6554 -> 0.8210) "
+        "Key Generative AI Milestone: CardioDiff delivers an absolute gain of +16.56% in Macro-F1 (0.6554 -> 0.8210) "
         "and +29.78% in minority recall (0.4898 -> 0.7876) while simultaneously lifting overall accuracy to 96.90%.",
         "Performance Breakthrough:"
     )
@@ -759,7 +757,6 @@ def build_document():
 
     add_h2("11.4 Confusion Matrix & Latent Manifold Visualizations")
     
-    # Insert Figures if available
     img_cm = "results/confusion_matrix.png"
     if os.path.exists(img_cm):
         add_p("Figure 1: Confusion Matrix Comparison (Baseline vs. CardioDiff Augmented)", bold=True, color=slate)
@@ -798,8 +795,8 @@ def build_document():
     add_bullet("Tab 3: Results: ", "Displays interactive metric tables, confusion matrices, ablation analyses, and generative 1D-FID / Diversity charts.")
     add_bullet("Tab 4: Latent Space: ", "Executes real-time 2D PCA projections on 64-dimensional feature embeddings, allowing visual inspection of real vs. synthetic class cluster overlap.")
 
-    add_h2("12.3 Clinical Impact & Utility")
-    add_bullet("Addressing Scarcity: ", "Solves the fundamental data acquisition bottleneck for rare conditions like Fusion beats.")
+    add_h2("12.3 Clinical Impact & Data-Centric AI")
+    add_bullet("Addressing Scarcity: ", "Solves the fundamental data acquisition bottleneck for rare conditions like Fusion beats via targeted generative modeling.")
     add_bullet("HIPAA/GDPR Compliance: ", "Synthetic beats contain zero Protected Health Information (PHI), enabling safe cross-institutional research collaboration.")
 
     doc.add_page_break()
@@ -809,12 +806,12 @@ def build_document():
     # =========================================================================
     add_h1("13. CONCLUSION")
     add_p(
-        "This project successfully designed, implemented, and validated CardioDiff, a novel soft computing framework combining "
-        "Conditional 1D Denoising Diffusion Probabilistic Models (DDPM) with deep 1D Convolutional Neural Networks for bio-signal synthesis: "
+        "This project successfully designed, implemented, and validated CardioDiff, a novel Generative Artificial Intelligence "
+        "framework combining Conditional 1D Denoising Diffusion Probabilistic Models (DDPM) with deep 1D Convolutional Neural Networks for bio-signal synthesis: "
     )
     add_bullet("Overcame Severe Skew: ", "On 109,446 real MIT-BIH heartbeats, CardioDiff increased Macro-F1 from 0.6554 to 0.8210 (+16.56%) and minority recall from 0.4898 to 0.7876 (+29.78%).")
     add_bullet("Critical Arrhythmia Breakthrough: ", "Sensitivity for rare Fusion beats surged from 21.60% to 77.16% (+55.56%), while Ventricular ectopic detection reached 93.51% (+29.56%).")
-    add_bullet("Superiority Over Heuristics: ", "With a 1D-FID of 40.0401 and Diversity Ratio of 1.0253, CardioDiff prevented the overfitting of Random Oversampling and the distortion of linear interpolation.")
+    add_bullet("Superiority Over Heuristics: ", "With a 1D-FID of 40.0401 and Diversity Ratio of 1.0253, CardioDiff established clear superiority over GANs, VAEs, and Random Oversampling.")
     add_bullet("Live Clinical Tool: ", "The system is accessible globally as an interactive diagnostic platform at https://cardiodiff.streamlit.app/.")
 
     add_h1("14. FUTURE SCOPE")
@@ -853,7 +850,7 @@ def build_document():
     # =========================================================================
     # 16. APPENDIX
     # =========================================================================
-    add_h1("16. APPENDIX: CORE CODE SNIPPETS")
+    add_h1("16. APPENDIX: CORE CODE IMPLEMENTATIONS")
     add_h2("Appendix A: Conditional 1D Residual Block (PyTorch)")
     add_code(
         "class ConvBlock1D(nn.Module):\n"
